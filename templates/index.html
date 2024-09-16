@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soccer AI Chatbot</title>
+    <!-- Link to CSS styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Soccer Chatbot</h1>
+        <p>Ask me about your favorite soccer leagues, teams, or players!</p>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- League Logos Section (now without the heading) -->
+            <section class="leagues">
+                <div class="logos">
+                    <img src="{{ url_for('static', filename='premier_league.png') }}" alt="Premier League">
+                    <img src="{{ url_for('static', filename='la_liga.png') }}" alt="La Liga">
+                    <img src="{{ url_for('static', filename='bundesliga.png') }}" alt="Bundesliga">
+                    <img src="{{ url_for('static', filename='serie_a.png') }}" alt="Serie A">
+                    <img src="{{ url_for('static', filename='ligue_1.png') }}" alt="Ligue 1">
+                    <img src="{{ url_for('static', filename='fifa_world_cup.png') }}" alt="FIFA World Cup">
+                    <img src="{{ url_for('static', filename='champions_league.png') }}" alt="UEFA Champions League">
+                    <img src="{{ url_for('static', filename='eredivisie.png') }}" alt="Eredivisie">
+                    <img src="{{ url_for('static', filename='brasileirao.png') }}" alt="Campeonato Brasileiro Série A">
+                    <img src="{{ url_for('static', filename='championship.png') }}" alt="Championship">
+                    <img src="{{ url_for('static', filename='primeira_liga.png') }}" alt="Primeira Liga">
+                    <img src="{{ url_for('static', filename='european_championship.png') }}" alt="European Championship">
+                    <img src="{{ url_for('static', filename='copa_libertadores.png') }}" alt="Copa Libertadores">
+                </div>
+            </section>
+
+            <!-- Chatbox Input and Response Area -->
+            <div class="chatbox">
+                <input type="text" id="queryInput" placeholder="Type your question here...">
+                <button id="sendBtn">Send</button>
+            </div>
+
+            <!-- Chatbot response -->
+            <div id="response" class="response"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Soccer AI Chatbot</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
