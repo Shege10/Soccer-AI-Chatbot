@@ -11,23 +11,20 @@ document.getElementById('sendBtn').addEventListener('click', function() {
         let responseDiv = document.getElementById('response');
         responseDiv.innerHTML = '';  // Clear the existing response
 
-        // Extract the year from the query (optional if detected by the backend)
-        let yearMatch = query.match(/\b(19|20)\d{2}\b/);  // Regex to find a 4-digit year
-        let year = yearMatch ? yearMatch[0] : null;
-
         if (data.error) {
             responseDiv.innerHTML = `<p>${data.error}</p>`;
             return;
         }
 
-        // Show a message with the year if it exists
-        if (year) {
-            responseDiv.innerHTML += `<p>Showing results for the year ${year}:</p>`;
+        // Check if player stats are present
+        if (data.player_stats) {
+            let table = `<table border="1"><thead><tr><th>Player</th><th>Matches Played</th><th>Goals</th><th>Assists</th></tr></thead><tbody>`;
+            table += `<tr><td>${data.player_stats.player}</td><td>${data.player_stats.matches}</td><td>${data.player_stats.goals}</td><td>${data.player_stats.assists}</td></tr>`;
+            table += '</tbody></table>';
+            responseDiv.innerHTML += table;
         }
-
         // Check if top scorers data is present
-        if (data.scorers && data.scorers.length > 0) {
-            // Create a table for top scorers
+        else if (data.scorers && data.scorers.length > 0) {
             let table = `<table border="1"><thead><tr>
                 <th>Position</th><th>Player</th><th>Team</th><th>Goals</th></tr></thead><tbody>`;
 
@@ -44,7 +41,9 @@ document.getElementById('sendBtn').addEventListener('click', function() {
             table += '</tbody></table>';  // Close the table
             responseDiv.innerHTML += table;
 
-        } else if (data.standings) {
+        }
+        // Check if standings data is present
+        else if (data.standings) {
             // Create a table for standings
             let table = `<table border="1"><thead><tr>
                 <th>Position</th><th>Team</th><th>Played</th><th>Won</th>
@@ -65,8 +64,32 @@ document.getElementById('sendBtn').addEventListener('click', function() {
 
             table += '</tbody></table>';  // Close the table
             responseDiv.innerHTML += table;
-        } else {
-            responseDiv.innerHTML = `<p>No valid data available for this query.</p>`;
+        }
+        // Check if match data (upcoming or past) is present
+        else if (data.matches) {
+            let table = `<table border="1"><thead><tr><th>Date</th><th>Home Team</th><th>Away Team</th><th>Score</th></tr></thead><tbody>`;
+
+            data.matches.forEach(match => {
+                // Check if the match is finished or if it's scheduled
+                let score = '0 - 0'; // Default for scheduled matches
+                if (match.status === 'FINISHED' && match.score && match.score.fullTime) {
+                    let homeScore = match.score.fullTime.homeTeam !== null ? match.score.fullTime.homeTeam : 0;
+                    let awayScore = match.score.fullTime.awayTeam !== null ? match.score.fullTime.awayTeam : 0;
+                    score = `${homeScore} - ${awayScore}`;
+                }
+
+                // Convert match date to a readable format
+                const matchDate = new Date(match.utcDate).toLocaleString();
+
+                table += `<tr><td>${matchDate}</td><td>${match.homeTeam.name}</td><td>${match.awayTeam.name}</td><td>${score}</td></tr>`;
+            });
+
+            table += '</tbody></table>';
+            responseDiv.innerHTML += table;
+        }
+        // Handle no valid data found
+        else {
+            responseDiv.innerHTML = '<p>No valid data available for this query.</p>';
         }
     })
     .catch(error => {
@@ -75,7 +98,7 @@ document.getElementById('sendBtn').addEventListener('click', function() {
     });
 });
 
-// Add an event listener to the input field to detect the "Enter" key press
+// Event listener to the input field to detect the "Enter" key press
 document.getElementById('queryInput').addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
         event.preventDefault();  // Prevent the default action (form submission)

@@ -1,2 +1,6 @@
-Flask
-requests
+Flask==2.0.1
+requests==2.26.0
+gunicorn==20.1.0
+Werkzeug==2.0.3
+spacy
+en-core-web-sm
