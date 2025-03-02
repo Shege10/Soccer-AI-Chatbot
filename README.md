@@ -30,12 +30,3 @@ Before running the application, you need to install the following dependencies:
 
 To start the Flask application, run the following command:
 python app.py
-
-### Setup
-
-1. **Football-Data API Key:**
-   Obtain an API key from [Football-Data.org](https://www.football-data.org/) and replace the `API_KEY` variable in the `app.py` file with your key.
-
-2. **Run the Application:**
-   To start the Flask application, run the following command:
-   python app.py
